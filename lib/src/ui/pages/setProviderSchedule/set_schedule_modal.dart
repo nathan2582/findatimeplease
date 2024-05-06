@@ -1,5 +1,5 @@
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/are_you_sure_dialog.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/set_provider_schedule.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/are_you_sure_dialog.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/set_provider_schedule.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_icon_button.dart';
 import 'package:flutter/material.dart';
 
