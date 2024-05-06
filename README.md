@@ -4,13 +4,13 @@ You can play around with a deployed Flutter Web version here:
 
 https://findatimeplease.web.app/
 
-## Request Appointment
-
-I took a simpler UX experience approach. It is a step by step sequence where the user selects a provider, selects a date, then selects a time, and then enters their information. This is a simple and easy to understand flow. The user can see the available times for the provider and can select a time that works for them.
-
 # Note
 
 This is built to be viewed on a desktop computer. The scrolling functionality on mobile web is NOT optimized. Scrolling is a bit janky on mobile web.
+
+## Request Appointment
+
+I took a simpler UX experience approach. It is a step by step sequence where the user selects a provider, selects a date, then selects a time, and then enters their information. This is a simple and easy to understand flow. The user can see the available times for the provider and can select a time that works for them.
 
 ### Incomplete Tasks
 
