@@ -8,6 +8,10 @@ https://findatimeplease.web.app/
 
 I took a simpler UX experience approach. It is a step by step sequence where the user selects a provider, selects a date, then selects a time, and then enters their information. This is a simple and easy to understand flow. The user can see the available times for the provider and can select a time that works for them.
 
+# Note
+
+This is built to be viewed on a desktop computer. The scrolling functionality on mobile web is NOT optimized. Scrolling is a bit janky on mobile web.
+
 ### Incomplete Tasks
 
 The format of the data that is sent to the backend is not considered. A middle translation layer would almost certainly be needed to convert the data to a format that the backend can understand.
@@ -26,9 +30,13 @@ The format of the data that is sent to the backend is not considered. A middle t
 
 # Thoughts and Ruminations
 
-In hindsight, I should have not attempted to squeeze in a coding challenge when on a road trip with a 5 month old to a wedding. I was not able to give this project the time and attention it deserved. I was able to get the basic functionality working, but I was not able to implement the more advanced features I wanted to, I wasn't as organized as I would have liked, and I didn't have the time to write tests.
+In hindsight, I should have not attempted to squeeze in a coding challenge when on a road trip with a 5 month old to a wedding. I was not able to give this project the time and attention it deserved. I was able to get the functionality working, but I was not able to implement the more advanced features I wanted to, I wasn't as organized as I would have liked.
 
-In hindsight, I assumed the backend data structure for how schedules are set for providers. In a real world scneario, I would be in communication with the backend teams about database schema and business requirements. In this coding example, I made the assumption that the provider would have a list of available times and the user would select from those times.
+My git commit history is far from what I desire. I would have liked to have more granular commits. I would have liked to have more descriptive commit messages. I would have liked to have actually utilized branches. I would have liked to have more tests. I would have liked to have more documentation.
+
+I did spend about 6-7 somewhat distracted hours on this task. When not on vacation, I have a distraction-free workspace and work station.
+
+I assumed the backend data structure for how schedules are set for providers. In a real world scneario, I would be in communication with the backend teams about database schema and business requirements. In this coding example, I made the assumption that the provider would have a list of available times and the user would select from those times.
 
 With this implementation, if a provider needed to adjust their schedule, they would need to update the list of available times. This could be cumbersome if the provider has a schedule that changes weekly. On the contrary, if a provider is required to set their schedule each week, the user experience for the provider would be a little more painful.
 
