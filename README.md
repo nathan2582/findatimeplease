@@ -4,8 +4,6 @@ You can play around with a deployed Flutter Web version here:
 
 https://findatimeplease.web.app/
 
-# Note
-
 This is built to be viewed on a desktop computer. The scrolling functionality on mobile web is NOT optimized. Scrolling is a bit janky on mobile web.
 
 ## Request Appointment
