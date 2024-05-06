@@ -1,41 +1,36 @@
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({
+class DatePicker extends StatefulWidget {
+  const DatePicker({
     super.key,
-    this.initialDates,
-    this.initialTime,
-    required this.blockedDates,
+    this.initialDate,
     required this.dateSelected,
   });
 
-  final List<DateTime>? initialDates;
-  final DateTime? initialTime;
-  final List<DateTime> blockedDates;
+  final DateTime? initialDate;
   final Function(DateTime) dateSelected;
 
   @override
-  State<DateTimePicker> createState() => _DateTimePickerState();
+  State<DatePicker> createState() => _DatePickerState();
 }
 
-class _DateTimePickerState extends State<DateTimePicker> {
-  List<DateTime> _selectedDays = [];
-
+class _DatePickerState extends State<DatePicker> {
+  DateTime? _selectedDay;
+  final twentyFourHoursFromNow = DateTime.now().add(const Duration(days: 1));
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final theDaysButOnUtcMidnight = widget.initialDates
-          ?.map((e) => DateTime.utc(e.year, e.month, e.day))
-          .toList();
+      final initialDate = widget.initialDate ?? twentyFourHoursFromNow;
+      final theDaysButOnUtcMidnight =
+          DateTime.utc(initialDate.year, initialDate.month, initialDate.day);
+
       setState(() {
-        _selectedDays = theDaysButOnUtcMidnight ?? [];
+        _selectedDay = theDaysButOnUtcMidnight;
       });
     });
   }
@@ -57,13 +52,11 @@ class _DateTimePickerState extends State<DateTimePicker> {
                 headerStyle: const HeaderStyle(
                   titleCentered: true,
                 ),
-                firstDay: DateTime.now(),
+                firstDay: twentyFourHoursFromNow,
                 availableCalendarFormats: const {CalendarFormat.month: 'Month'},
                 rowHeight: 32,
-                lastDay: DateTime.now().add(const Duration(days: 365)),
-                focusedDay: _selectedDays.isEmpty == true
-                    ? DateTime.now()
-                    : _selectedDays.last,
+                lastDay: twentyFourHoursFromNow.add(const Duration(days: 365)),
+                focusedDay: _selectedDay ?? twentyFourHoursFromNow,
                 calendarFormat: CalendarFormat.month,
                 calendarStyle: CalendarStyle(
                   weekendTextStyle: TextStyle(
@@ -81,27 +74,22 @@ class _DateTimePickerState extends State<DateTimePicker> {
                     shape: BoxShape.circle,
                   ),
                   todayDecoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
                 ),
                 selectedDayPredicate: (day) {
-                  return _selectedDays
-                      .any((selectedDay) => isSameDay(selectedDay, day));
+                  return widget.initialDate == null
+                      ? false
+                      : isSameDay(_selectedDay, day);
                 },
                 onDaySelected: (selectedDay, focusedDay) {
-                  // final dateIsBlocked = widget.blockedDates.any(
-                  //     (blockedDate) => isSameDay(blockedDate, selectedDay));
-
                   setState(() {
-                    if (_selectedDays.contains(selectedDay)) {
-                      _selectedDays.remove(selectedDay);
-                    } else {
-                      _selectedDays.add(selectedDay);
-                    }
+                    _selectedDay = selectedDay;
                   });
-
                   widget.dateSelected(selectedDay);
                 },
                 headerVisible: true,

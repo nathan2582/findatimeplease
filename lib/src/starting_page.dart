@@ -25,8 +25,15 @@ class StartingPage extends StatelessWidget {
               child: AppPrimaryButton(
                 analyticsName: 'request_appointment_button',
                 showLoadingSpinner: false,
-                onPressed: () {
-                  showScheduleAppointmentModal(context);
+                onPressed: () async {
+                  final result = await showScheduleAppointmentModal(context);
+                  if (result == true && context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Appointment Booked!'),
+                      ),
+                    );
+                  }
                 },
                 text: 'Request Appointment',
               ),

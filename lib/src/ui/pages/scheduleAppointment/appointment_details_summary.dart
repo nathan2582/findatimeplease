@@ -1,4 +1,6 @@
+import 'package:findatimeplease/src/theme/app_theme.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/selected_date_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,30 +13,127 @@ class AppointmentDetailsSummary extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        const Text('Your Request'),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: size.width,
-          child: Text(
-            vm.selectedProvider?.name ?? '',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          vm.selectedDate?.toLocal().toString() ?? '',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: greyColor,
+        if (vm.countdownTimer?.isActive == true)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Icon(Icons.timer, size: 14),
+              const SizedBox(width: 4),
+              Text(
+                vm.remainingTimeText,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
+            ],
+          ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(appBorderRadius),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text('Your Appointment Details',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                  child: SizedBox(
+                    width: size.width,
+                    child: Row(
+                      children: [
+                        const Icon(Icons.person_outlined),
+                        if (vm.selectedProvider != null)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Text('With:'),
+                          ),
+                        Text(
+                          vm.selectedProvider?.name ?? '',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (vm.selectedDate != null)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.access_time_rounded),
+                          const SizedBox(width: 8),
+                          const Text('When:'),
+                          const SizedBox(width: 8),
+                          Text(
+                            vm.selectedDate?.toDisplayText ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          if (vm.selectedTime != null)
+                            Row(
+                              children: [
+                                const Text(' at '),
+                                Text(
+                                  vm.selectedTime?.format(context) ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          const Icon(Icons.timer_outlined),
+                          const SizedBox(width: 8),
+                          const Text('Duration:'),
+                          const SizedBox(width: 8),
+                          Text(
+                            '15 minutes',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+              ],
+            ),
+          ),
         ),
       ],
     );
   }
 }
-
-// TODO: Put into Material color scheme
-const greyColor = Color.fromARGB(255, 199, 199, 204);

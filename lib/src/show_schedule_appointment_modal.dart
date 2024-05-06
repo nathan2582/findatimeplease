@@ -1,8 +1,8 @@
 import 'package:findatimeplease/src/schedule_appointment_modal.dart';
 import 'package:flutter/material.dart';
 
-Future<void> showScheduleAppointmentModal(BuildContext context) async {
-  return showModalBottomSheet<void>(
+Future<bool?> showScheduleAppointmentModal(BuildContext context) async {
+  return showModalBottomSheet<bool?>(
     context: context,
     isScrollControlled: true,
     isDismissible: false,

@@ -9,21 +9,25 @@ class TimeCell extends StatelessWidget {
     required this.time,
     required this.selected,
     required this.timeSelected,
+    required this.enabled,
   });
 
   final TimeOfDay time;
   final bool selected;
   final VoidCallback timeSelected;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     // TODO: use a different gesture recognizer so that the inkwell is circular and not rectangular
     return AppInkWell(
       analyticsName: 'time_cell_tapped',
-      onTap: timeSelected,
+      onTap: enabled ? timeSelected : null,
       child: Container(
         decoration: BoxDecoration(
-          color: selected ? Theme.of(context).colorScheme.primary : greyColor,
+          color: selected
+              ? Theme.of(context).colorScheme.primary
+              : const Color.fromARGB(255, 199, 199, 204),
           borderRadius: BorderRadius.circular(500),
         ),
         padding: const EdgeInsets.all(16),

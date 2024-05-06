@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:findatimeplease/src/locator/locator.dart';
 import 'package:findatimeplease/src/services/base_service_classes.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/client_side_time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/countdown_timer.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_repository.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_time_slot.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleAppointmentViewModel extends BaseState {
@@ -11,6 +15,9 @@ class ScheduleAppointmentViewModel extends BaseState {
     init();
   }
 
+  CountdownTimer? countdownTimer = CountdownTimer(30 * 60);
+
+  String get remainingTimeText => countdownTimer?.displayTime ?? '';
   final providerRepo = locator<ProviderRepository>();
   final pageController = PageController();
 
@@ -26,63 +33,107 @@ class ScheduleAppointmentViewModel extends BaseState {
     notifyListeners();
   }
 
-  TimeOfDay? get _selectedTime => _providerTimeAvailability
+  TimeOfDay? get selectedTime => _providerTimeAvailability
       .firstWhereOrNull((element) => element.selected)
       ?.time;
 
-  bool fetchingDates = false;
+  bool _fetchingDates = false;
+  bool get fetchingDates => _fetchingDates;
+  set fetchingDates(bool value) {
+    _fetchingDates = value;
+    notifyListeners();
+  }
 
-  bool get nextButtonEnabled {
-    if (busy) return false;
-    if (!pageController.hasClients) return true;
+  bool _fetchingProviders = false;
+  bool get fetchingProviders => _fetchingProviders;
+  set fetchingProviders(bool value) {
+    _fetchingProviders = value;
+    notifyListeners();
+  }
+
+  bool _bookingAppointment = false;
+
+  bool get bookingAppointment => _bookingAppointment;
+
+  set bookingAppointment(bool value) {
+    _bookingAppointment = value;
+    notifyListeners();
+  }
+
+  bool get primaryButtonEnabled {
+    if (busy || fetchingDates || fetchingProviders) return false;
+    if (!pageController.hasClients) return false;
     final noodle = pageController.page?.toInt();
     switch (noodle) {
       case 0:
         return _selectedProvider != null;
       case 1:
-        return _selectedDate != null;
+        return _selectedDate != null && selectedTime != null;
       default:
         return true;
     }
   }
 
+// TODO: need access to BuildContext to easily localize text
+  String primaryButtonText = 'Next';
+
   ProviderModel? _selectedProvider;
   ProviderModel? get selectedProvider => _selectedProvider;
 
-  List<TimeCellModel> _providerTimeAvailability = [];
+  List<ClientSideTimeCellModel> _providerTimeAvailability = [];
 
-  List<TimeCellModel> get morningTimeSlots => _providerTimeAvailability
-      .where((element) => element.time.hour < 12)
-      .toList();
+  List<ClientSideTimeCellModel> get morningTimeSlots =>
+      _providerTimeAvailability
+          .where((element) => element.time.hour < 12)
+          .toList();
 
-  List<TimeCellModel> get afternoonTimeSlots => _providerTimeAvailability
-      .where((element) => element.time.hour >= 12 && element.time.hour < 17)
-      .toList();
+  List<ClientSideTimeCellModel> get afternoonTimeSlots =>
+      _providerTimeAvailability
+          .where((element) => element.time.hour >= 12 && element.time.hour < 17)
+          .toList();
 
-  List<TimeCellModel> get eveningTimeSlots => _providerTimeAvailability
-      .where((element) => element.time.hour >= 17)
-      .toList();
+  List<ClientSideTimeCellModel> get eveningTimeSlots =>
+      _providerTimeAvailability
+          .where((element) => element.time.hour >= 17)
+          .toList();
+
+  List<ProviderTimeSlot> providerTimeSlots = [];
 
   void setSelectedProvider(ProviderModel provider) {
     _selectedProvider = provider;
-    nextPage();
     notifyListeners();
   }
 
+  bool onConfirmPage = false;
+  bool appointmentBooked = false;
+
   init() async {
-    setBusy(true);
-    selectedDate = DateTime.now();
-    _providerTimeAvailability = _buildTimeCells(
-      DateTime(2024, 1, 1, 8, 0),
-      DateTime(2024, 1, 1, 18, 0),
-    );
+    try {
+      fetchingProviders = true;
 
-    providerList = await providerRepo.fetchUsersProviders('theUserIdGoesHere');
+      providerList =
+          await providerRepo.fetchUsersProviders('theUserIdGoesHere');
 
-    setBusy(false);
+      initTimer();
+    } on Exception catch (e) {
+      logger.logError(e);
+    } finally {
+      fetchingProviders = false;
+    }
   }
 
-  chooseTime(TimeCellModel time) {
+  void initTimer() {
+    countdownTimer?.addListener(notifyListeners);
+    countdownTimer?.startCountdown();
+  }
+
+  @override
+  void dispose() {
+    countdownTimer?.removeListener(notifyListeners);
+    super.dispose();
+  }
+
+  chooseTime(ClientSideTimeCellModel time) {
     int index = _providerTimeAvailability.indexWhere(
       (element) => element.time == time.time,
     );
@@ -101,36 +152,68 @@ class ScheduleAppointmentViewModel extends BaseState {
     }
   }
 
-  List<TimeCellModel> _buildTimeCells(
-    DateTime start,
-    DateTime end,
-  ) {
-    final List<TimeCellModel> timeCells = [];
-    for (var i = start;
-        i.isBefore(end);
-        i = i.add(const Duration(minutes: 15))) {
-      timeCells.add(
-        TimeCellModel(
-          time: TimeOfDay.fromDateTime(i),
-          selected: false,
-        ),
-      );
-    }
-    return timeCells;
+  Future<void> nextPage() async {
+    await pageController.nextPage(duration: duration, curve: curve);
+    notifyListeners();
   }
 
-  void nextPage() {
-    if (pageController.page == 2) return;
-    pageController.nextPage(duration: duration, curve: curve);
-  }
-
-  void previousPage() {
+  Future<void> previousPage() async {
     if (pageController.page == 0) return;
-    pageController.previousPage(duration: duration, curve: curve);
+    await pageController.previousPage(duration: duration, curve: curve);
+    notifyListeners();
+  }
+
+  Future<void> handlePrimaryButtonTapped() async {
+    if (onConfirmPage) {
+      await _bookAppointment();
+    } else {
+      await nextPage();
+    }
+  }
+
+  Future<void> _bookAppointment() async {
+    try {
+      bookingAppointment = true;
+      final time = selectedTime;
+      if (time == null) return;
+
+      final providerId = _selectedProvider?.id;
+      if (providerId == null) return;
+
+      final date = _selectedDate;
+      if (date == null) return;
+
+      final timeSlot = _providerTimeAvailability.firstWhereOrNull(
+        (element) => element.selected,
+      );
+
+      if (timeSlot == null) return;
+      await providerRepo.bookAppointment();
+      countdownTimer?.stopCountdown();
+      appointmentBooked = true;
+      primaryButtonText = 'Done';
+
+      await nextPage();
+    } on Exception catch (e) {
+      logger.logError(e);
+    } finally {
+      bookingAppointment = false;
+    }
+  }
+
+  onPageChanged(int? page) {
+    onConfirmPage = page == 2;
+    primaryButtonText = onConfirmPage
+        ? 'Confirm Appointment'
+        : appointmentBooked
+            ? 'Done'
+            : 'Next';
+    notifyListeners();
   }
 
   Future<void> handleDateSelected(DateTime date) async {
     _selectedDate = date;
+    _providerTimeAvailability.clear();
     fetchingDates = true;
     await _fetchTimesForDate(providerId: 'todo', date: date);
     notifyListeners();
@@ -140,21 +223,43 @@ class ScheduleAppointmentViewModel extends BaseState {
     required String providerId,
     required DateTime date,
   }) async {
-    // simulate fetching time slots
-
     try {
       fetchingDates = true;
       notifyListeners();
-      await Future.delayed(const Duration(seconds: 2));
-      final dateRange = await providerRepo.fetchProviderTimeSlots(
+      final dateRange = await providerRepo.fetchAvailableTimeSlotsForDay(
         providerId: providerId,
         day: date,
       );
+
+      providerTimeSlots = dateRange;
+
+      providerTimeSlots.removeWhere(
+        (element) => element.start.isBefore(
+          DateTime.now().add(
+            const Duration(days: 1),
+          ),
+        ),
+      );
+
+      final twentyFourHoursFromNow =
+          DateTime.now().add(const Duration(days: 1));
+      _providerTimeAvailability = dateRange.map(
+        (e) {
+          return ClientSideTimeCellModel(
+            time: TimeOfDay.fromDateTime(e.start),
+            selected: false,
+            minutes: 15,
+            enabled: e.start.isAfter(twentyFourHoursFromNow),
+          );
+        },
+      ).toList();
 
       fetchingDates = false;
       notifyListeners();
     } on Exception catch (e) {
       logger.logError(e);
+    } finally {
+      fetchingDates = false;
     }
   }
 }

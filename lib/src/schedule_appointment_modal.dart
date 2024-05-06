@@ -1,4 +1,5 @@
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_flow.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/are_you_sure_dialog.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_icon_button.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,13 @@ class ScheduleAppointmentModal extends StatelessWidget {
                   child: AppIconButton(
                     analyticsName: 'close_schedule_appointment_modal_button',
                     icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () async {
+                      final result = await showAreYouSureDialog(context);
+
+                      if (result == true && context.mounted) {
+                        Navigator.of(context).pop(false);
+                      }
+                    },
                   ),
                 ),
               ],

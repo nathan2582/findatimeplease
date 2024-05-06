@@ -3,7 +3,6 @@ import 'package:findatimeplease/src/services/base_service_classes.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_repository.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/selected_date_extension.dart';
 import 'package:findatimeplease/src/ui/pages/setProviderSchedule/provider_working_day_of_week.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +15,23 @@ class SetProviderScheduleViewModel extends BaseState {
 
   final pageController = PageController();
 
-  final duration = const Duration(milliseconds: 300);
-  final curve = Curves.easeInOut;
-  bool fetchingDates = false;
+  bool _fetchingDates = false;
+  bool get fetchingDates => _fetchingDates;
+  set fetchingDates(bool value) {
+    _fetchingDates = value;
+    notifyListeners();
+  }
 
-  bool get nextButtonEnabled {
-    return providerTimeRanges.any((element) => element.selected);
+  bool get primaryButtonEnabled =>
+      providerTimeRanges.any((element) => element.selected);
+
+//TODO: We need access to the context for localized text.
+  String get primaryText {
+    if (!pageController.hasClients || pageController.page == 0) {
+      return 'Next';
+    } else {
+      return 'Set Schedule';
+    }
   }
 
   final List<ProviderWorkingDayOfWeek> providerTimeRanges = List.generate(
@@ -38,14 +48,12 @@ class SetProviderScheduleViewModel extends BaseState {
   init() async {
     setBusy(true);
     selectedDateTime = DateTime.now();
-    providerList = await providerRepo.fetchUsersProviders('todo');
+    _providerList = await providerRepo.fetchUsersProviders('todo');
 
     setBusy(false);
   }
 
-  List<ProviderModel> providerList = [];
-
-  String? get selectedDateTimeDisplay => selectedDateTime?.toDisplayText;
+  List<ProviderModel> _providerList = [];
 
   DateTime? _selectedDateTime;
   DateTime? get selectedDateTime => _selectedDateTime;
@@ -56,42 +64,42 @@ class SetProviderScheduleViewModel extends BaseState {
 
   void nextPage() {
     if (pageController.page == 2) return;
+    const duration = Duration(milliseconds: 300);
+    const curve = Curves.easeInOut;
     pageController.nextPage(duration: duration, curve: curve);
   }
 
   void previousPage() {
     if (pageController.page == 0) return;
+    const duration = Duration(milliseconds: 300);
+    const curve = Curves.easeInOut;
     pageController.previousPage(duration: duration, curve: curve);
   }
 
-  handleDateSelected(DateTime date) async {
+  Future<void> handleDateSelected(DateTime date) async {
     _selectedDateTime = date;
-    fetchingDates = true;
     await _fetchTimesForDate(providerId: 'todo', date: date);
-    notifyListeners();
   }
 
-  _fetchTimesForDate({
+  Future<void> _fetchTimesForDate({
     required String providerId,
     required DateTime date,
   }) async {
     try {
       fetchingDates = true;
-      notifyListeners();
       await Future.delayed(const Duration(seconds: 2));
-      final dateRange = await providerRepo.fetchProviderTimeSlots(
+      final dateRange = await providerRepo.fetchAvailableTimeSlotsForDay(
         providerId: providerId,
         day: date,
       );
-
-      fetchingDates = false;
-      notifyListeners();
     } on Exception catch (e) {
       logger.logError(e);
+    } finally {
+      fetchingDates = false;
     }
   }
 
-  selectedDayOfWeek(
+  void selectedDayOfWeek(
     DayOfWeek dayOfWeek,
     bool? selected,
   ) {
@@ -113,7 +121,8 @@ class SetProviderScheduleViewModel extends BaseState {
     notifyListeners();
   }
 
-  startChanged(
+// MARK: Expansion Tile
+  void startChanged(
     DayOfWeek dayOfWeek,
     TimeOfDay start,
   ) {
@@ -128,7 +137,7 @@ class SetProviderScheduleViewModel extends BaseState {
     notifyListeners();
   }
 
-  endChanged(
+  void endChanged(
     DayOfWeek dayOfWeek,
     TimeOfDay end,
   ) {
@@ -143,12 +152,35 @@ class SetProviderScheduleViewModel extends BaseState {
     notifyListeners();
   }
 
-  handleExpansionChanged(DayOfWeek dayOfWeek, bool expanded) {
+  void handleExpansionChanged(DayOfWeek dayOfWeek, bool expanded) {
     for (var element in providerTimeRanges) {
-      print('dayOfWeek: $dayOfWeek, element.dayOfWeek: ${element.dayOfWeek}');
       if (element.dayOfWeek != dayOfWeek && element.controller.isExpanded) {
         element.controller.collapse();
       }
+    }
+  }
+
+  Future<void> setProviderSchedule() async {
+    try {
+      setBusy(true);
+
+      await providerRepo.setProviderSchedule(
+        providerId: 'todo',
+        providerTimeRanges: providerTimeRanges,
+      );
+    } on Exception catch (e) {
+      logger.logError(e);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  void handlePrimaryButton() {
+    if (!pageController.hasClients) return;
+    if (pageController.page == 0) {
+      nextPage();
+    } else {
+      setProviderSchedule();
     }
   }
 }

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ScheduleAppointmentComponent extends StatelessWidget {
-  const ScheduleAppointmentComponent({super.key});
+class ConfirmAppointmentComponent extends StatelessWidget {
+  const ConfirmAppointmentComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        Text('Schedule your appointment'),
+        const SizedBox(height: 56),
+        Text(
+          'Ready to Book?',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
       ],
     );
   }

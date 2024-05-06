@@ -1,6 +1,6 @@
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/select_time_component.dart';
 import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_cell.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/client_side_time_cell_model.dart';
 import 'package:flutter/material.dart';
 
 class TimeGridWithListOfDatesAsParameters extends StatelessWidget {
@@ -10,28 +10,36 @@ class TimeGridWithListOfDatesAsParameters extends StatelessWidget {
     required this.timeSelected,
   });
 
-  final List<TimeCellModel> dates;
-  final Function(TimeCellModel) timeSelected;
+  final List<ClientSideTimeCellModel> dates;
+  final Function(ClientSideTimeCellModel) timeSelected;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 16),
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      crossAxisCount: 3,
-      childAspectRatio: 2,
-      children: dates
-          .map(
-            (date) => TimeCell(
-              time: date.time,
-              selected: date.selected,
-              timeSelected: () => timeSelected(date),
-            ),
+    return dates.isEmpty
+        ? const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text('Nothing Available'),
           )
-          .toList(),
-    );
+        : GridView.builder(
+            shrinkWrap: true,
+            padding: const EdgeInsets.only(top: 16),
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              childAspectRatio: 2,
+            ),
+            itemCount: dates.length,
+            itemBuilder: (context, index) {
+              final date = dates[index];
+              return TimeCell(
+                time: date.time,
+                selected: date.selected,
+                enabled: date.enabled,
+                timeSelected: () => timeSelected(date),
+              );
+            },
+          );
   }
 }

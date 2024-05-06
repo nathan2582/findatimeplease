@@ -2,7 +2,6 @@ import 'package:findatimeplease/src/ui/pages/setProviderSchedule/capitalize_stri
 import 'package:findatimeplease/src/ui/pages/setProviderSchedule/set_provider_schedule_view_model.dart';
 import 'package:findatimeplease/src/ui/pages/setProviderSchedule/time_string_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class ConfirmWhenToWork extends StatelessWidget {
   const ConfirmWhenToWork(this.vm, {super.key});

@@ -34,9 +34,10 @@ class SetProviderScheduleComponent extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 AppPrimaryButton(
-                  text: 'Next',
+                  text: vm.primaryText,
                   analyticsName: 'next_button',
-                  onPressed: vm.nextButtonEnabled ? vm.nextPage : null,
+                  onPressed:
+                      vm.primaryButtonEnabled ? vm.handlePrimaryButton : null,
                 ),
                 const SizedBox(height: 8),
                 Center(

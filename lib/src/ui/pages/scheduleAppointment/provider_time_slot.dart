@@ -1,9 +1,11 @@
 class ProviderTimeSlot {
-  final DateTime time;
-  final bool available;
+  final DateTime start;
+  final DateTime end;
+  final String providerId;
 
   ProviderTimeSlot({
-    required this.time,
-    required this.available,
+    required this.start,
+    required this.end,
+    required this.providerId,
   });
 }

@@ -13,27 +13,38 @@ class TimeSlotsComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const TimeTitleText('MORNING'),
-        TimeGridWithListOfDatesAsParameters(
-          dates: vm.morningTimeSlots,
-          timeSelected: vm.chooseTime,
-        ),
-        const SizedBox(height: 16),
-        const TimeTitleText('AFTERNOON'),
-        TimeGridWithListOfDatesAsParameters(
-          dates: vm.afternoonTimeSlots,
-          timeSelected: vm.chooseTime,
-        ),
-        const SizedBox(height: 16),
-        const TimeTitleText('EVENING'),
-        TimeGridWithListOfDatesAsParameters(
-          dates: vm.eveningTimeSlots,
-          timeSelected: vm.chooseTime,
-        ),
-        const SizedBox(height: 16),
-      ],
-    );
+    return vm.selectedDate == null
+        ? const SizedBox.shrink()
+        : Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Text(
+                  'Appointments must be scheduled at least 24 hours in advance',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontStyle: FontStyle.italic,
+                      ),
+                ),
+              ),
+              const TimeTitleText('MORNING'),
+              TimeGridWithListOfDatesAsParameters(
+                dates: vm.morningTimeSlots,
+                timeSelected: vm.chooseTime,
+              ),
+              const SizedBox(height: 16),
+              const TimeTitleText('AFTERNOON'),
+              TimeGridWithListOfDatesAsParameters(
+                dates: vm.afternoonTimeSlots,
+                timeSelected: vm.chooseTime,
+              ),
+              const SizedBox(height: 16),
+              const TimeTitleText('EVENING'),
+              TimeGridWithListOfDatesAsParameters(
+                dates: vm.eveningTimeSlots,
+                timeSelected: vm.chooseTime,
+              ),
+              const SizedBox(height: 16),
+            ],
+          );
   }
 }

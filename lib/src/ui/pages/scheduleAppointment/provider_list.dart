@@ -16,7 +16,7 @@ class ProviderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: 3,
+      itemCount: providerList.length,
       shrinkWrap: true,
       separatorBuilder: (context, index) {
         return const SizedBox(height: 16);
