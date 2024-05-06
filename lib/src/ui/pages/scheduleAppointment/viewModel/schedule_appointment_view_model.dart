@@ -3,21 +3,25 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:findatimeplease/src/locator/locator.dart';
 import 'package:findatimeplease/src/services/base_service_classes.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/client_side_time_cell_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/countdown_timer.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_repository.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_time_slot.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/client_side_time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/countdownTimer/countdown_timer.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/models/provider_model.dart';
+import 'package:findatimeplease/src/repos/provider_repository.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/provider_time_slot.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleAppointmentViewModel extends BaseState {
-  ScheduleAppointmentViewModel() {
+  ScheduleAppointmentViewModel(this.countdownTimer) {
     init();
   }
 
-  CountdownTimer? countdownTimer = CountdownTimer(30 * 60);
+  StreamController<void> expiredStreamController =
+      StreamController<void>.broadcast();
+  Stream<void> get expiredStream => expiredStreamController.stream;
 
-  String get remainingTimeText => countdownTimer?.displayTime ?? '';
+  CountdownTimer countdownTimer;
+
+  String get remainingTimeText => countdownTimer.displayTime;
   final providerRepo = locator<ProviderRepository>();
   final pageController = PageController();
 
@@ -123,14 +127,15 @@ class ScheduleAppointmentViewModel extends BaseState {
   }
 
   void initTimer() {
-    countdownTimer?.addListener(notifyListeners);
-    countdownTimer?.startCountdown();
+    countdownTimer.addListener(_handleCountdownListener);
+
+    countdownTimer.startCountdown();
   }
 
-  @override
-  void dispose() {
-    countdownTimer?.removeListener(notifyListeners);
-    super.dispose();
+  _handleCountdownListener() {
+    if (countdownTimer.isExpired) {
+      expiredStreamController.add(null);
+    }
   }
 
   chooseTime(ClientSideTimeCellModel time) {
@@ -189,7 +194,7 @@ class ScheduleAppointmentViewModel extends BaseState {
 
       if (timeSlot == null) return;
       await providerRepo.bookAppointment();
-      countdownTimer?.stopCountdown();
+      // countdownTimer?.stopCountdown();
       appointmentBooked = true;
       primaryButtonText = 'Done';
 

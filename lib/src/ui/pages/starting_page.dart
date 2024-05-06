@@ -1,8 +1,5 @@
-import 'package:findatimeplease/src/schedule_appointment_modal.dart';
-import 'package:findatimeplease/src/show_schedule_appointment_modal.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/show_set_schedule_modal.dart';
-import 'package:findatimeplease/src/ui/widgets/buttons/app_icon_button.dart';
-import 'package:findatimeplease/src/ui/widgets/buttons/app_outlined_button.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/functions/show_schedule_appointment_modal.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/show_set_schedule_modal.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_primary_button.dart';
 import 'package:flutter/material.dart';
 

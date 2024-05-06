@@ -1,8 +1,8 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/capitalize_string.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/hour_range_widget.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/provider_working_day_of_week.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/time_string_formatters.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/extensions/capitalize_string.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/hour_range_widget.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/provider_working_day_of_week.dart';
+import 'package:findatimeplease/src/utils/time_string_formatters.dart';
 import 'package:flutter/material.dart';
 
 class DayHoursSelector extends StatefulWidget {

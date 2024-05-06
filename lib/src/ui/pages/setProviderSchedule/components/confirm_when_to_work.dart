@@ -1,6 +1,6 @@
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/capitalize_string.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/set_provider_schedule_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/time_string_formatters.dart';
+import 'package:findatimeplease/src/extensions/capitalize_string.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/viewModel/set_provider_schedule_view_model.dart';
+import 'package:findatimeplease/src/utils/time_string_formatters.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmWhenToWork extends StatelessWidget {

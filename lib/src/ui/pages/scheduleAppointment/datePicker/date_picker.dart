@@ -1,4 +1,4 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -49,9 +49,7 @@ class _DatePickerState extends State<DatePicker> {
               width: size.width,
               child: TableCalendar(
                 shouldFillViewport: true,
-                headerStyle: const HeaderStyle(
-                  titleCentered: true,
-                ),
+                headerStyle: const HeaderStyle(titleCentered: true),
                 firstDay: twentyFourHoursFromNow,
                 availableCalendarFormats: const {CalendarFormat.month: 'Month'},
                 rowHeight: 32,
@@ -82,9 +80,8 @@ class _DatePickerState extends State<DatePicker> {
                   ),
                 ),
                 selectedDayPredicate: (day) {
-                  return widget.initialDate == null
-                      ? false
-                      : isSameDay(_selectedDay, day);
+                  print('${DateTime.now().millisecondsSinceEpoch}: $day');
+                  return isSameDay(_selectedDay, day);
                 },
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {

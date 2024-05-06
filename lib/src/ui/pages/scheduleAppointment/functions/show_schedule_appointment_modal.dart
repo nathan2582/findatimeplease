@@ -1,4 +1,4 @@
-import 'package:findatimeplease/src/schedule_appointment_modal.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_modal.dart';
 import 'package:flutter/material.dart';
 
 Future<bool?> showScheduleAppointmentModal(BuildContext context) async {

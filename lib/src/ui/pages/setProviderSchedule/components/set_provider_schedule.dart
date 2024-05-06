@@ -1,6 +1,6 @@
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/confirm_when_to_work.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/set_provider_schedule_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/what_time_to_work.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/confirm_when_to_work.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/viewModel/set_provider_schedule_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/what_time_to_work.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_primary_button.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_text_button.dart';
 import 'package:flutter/material.dart';

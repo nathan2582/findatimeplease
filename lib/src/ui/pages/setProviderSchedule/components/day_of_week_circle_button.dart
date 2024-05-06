@@ -1,5 +1,5 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/days_of_week_schedule_dialog_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/days_of_week_schedule_dialog_view_model.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_outlined_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

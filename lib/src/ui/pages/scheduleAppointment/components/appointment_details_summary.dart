@@ -1,6 +1,7 @@
 import 'package:findatimeplease/src/theme/app_theme.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/selected_date_extension.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/countdownTimer/countdown_timer.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/viewModel/schedule_appointment_view_model.dart';
+import 'package:findatimeplease/src/extensions/selected_date_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,18 +16,21 @@ class AppointmentDetailsSummary extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (vm.countdownTimer?.isActive == true)
-          Row(
+        // TODO: could optimize by only calling notifyListeners when minutes
+        // change until the seconds are visible
+        Consumer<CountdownTimer>(builder: (context, countdown, child) {
+          return Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Icon(Icons.timer, size: 14),
               const SizedBox(width: 4),
               Text(
-                vm.remainingTimeText,
+                vm.fetchingProviders ? '-' : vm.remainingTimeText,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
-          ),
+          );
+        }),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(

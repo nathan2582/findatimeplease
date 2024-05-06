@@ -1,4 +1,4 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/models/provider_model.dart';
 import 'package:flutter/material.dart';
 
 class ProviderList extends StatelessWidget {

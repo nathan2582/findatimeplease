@@ -1,5 +1,5 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_list.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/provider_list.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/viewModel/schedule_appointment_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,6 +1,6 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_grid_with_list_of_dates_as_parameters.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_title_text.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/viewModel/schedule_appointment_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/time_grid_with_list_of_dates_as_parameters.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/time_title_text.dart';
 import 'package:flutter/material.dart';
 
 class TimeSlotsComponent extends StatelessWidget {

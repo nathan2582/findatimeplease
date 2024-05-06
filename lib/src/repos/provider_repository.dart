@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:findatimeplease/src/services/base_service_classes.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_time_slot.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/provider_working_day_of_week.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/models/provider_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/provider_time_slot.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/provider_working_day_of_week.dart';
 
 class ProviderRepository extends BaseRepo {
   List<ProviderWorkingDayOfWeek> providerTimeRanges = [];

@@ -21,16 +21,17 @@ class CountdownTimer extends ChangeNotifier {
   }
 
   bool get isActive => _timer?.isActive ?? false;
+  bool get isExpired => _currentSeconds <= 0;
 
   void startCountdown() {
     _currentSeconds = _totalSeconds;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _currentSeconds--;
+
       if (_currentSeconds == 0) {
-        timer.cancel();
-      } else {
-        _currentSeconds--;
-        notifyListeners();
+        _timer?.cancel();
       }
+      notifyListeners();
     });
   }
 

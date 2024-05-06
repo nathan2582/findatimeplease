@@ -1,9 +1,8 @@
 import 'package:findatimeplease/src/locator/locator.dart';
 import 'package:findatimeplease/src/services/base_service_classes.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/provider_repository.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/provider_working_day_of_week.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/repos/provider_repository.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/provider_working_day_of_week.dart';
 import 'package:flutter/material.dart';
 
 class SetProviderScheduleViewModel extends BaseState {
@@ -48,12 +47,12 @@ class SetProviderScheduleViewModel extends BaseState {
   init() async {
     setBusy(true);
     selectedDateTime = DateTime.now();
-    _providerList = await providerRepo.fetchUsersProviders('todo');
+    // _providerList = await providerRepo.fetchUsersProviders('todo');
 
     setBusy(false);
   }
 
-  List<ProviderModel> _providerList = [];
+  // List<ProviderModel> _providerList = [];
 
   DateTime? _selectedDateTime;
   DateTime? get selectedDateTime => _selectedDateTime;
@@ -88,10 +87,10 @@ class SetProviderScheduleViewModel extends BaseState {
     try {
       fetchingDates = true;
       await Future.delayed(const Duration(seconds: 2));
-      final dateRange = await providerRepo.fetchAvailableTimeSlotsForDay(
-        providerId: providerId,
-        day: date,
-      );
+      // final dateRange = await providerRepo.fetchAvailableTimeSlotsForDay(
+      //   providerId: providerId,
+      //   day: date,
+      // );
     } on Exception catch (e) {
       logger.logError(e);
     } finally {

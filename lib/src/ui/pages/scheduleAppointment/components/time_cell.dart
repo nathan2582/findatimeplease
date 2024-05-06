@@ -1,5 +1,3 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/appointment_details_summary.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/selected_date_extension.dart';
 import 'package:findatimeplease/src/ui/widgets/buttons/app_ink_well.dart';
 import 'package:flutter/material.dart';
 

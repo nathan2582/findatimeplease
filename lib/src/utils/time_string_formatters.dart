@@ -1,4 +1,4 @@
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/provider_working_day_of_week.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/provider_working_day_of_week.dart';
 import 'package:flutter/material.dart';
 
 String buildHoursToWork(ProviderWorkingDayOfWeek? pDayOfWeek) {

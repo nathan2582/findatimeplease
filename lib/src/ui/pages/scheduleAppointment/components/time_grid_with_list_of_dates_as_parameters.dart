@@ -1,6 +1,5 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/select_time_component.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_cell.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/client_side_time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/client_side_time_cell_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/time_cell.dart';
 import 'package:flutter/material.dart';
 
 class TimeGridWithListOfDatesAsParameters extends StatelessWidget {

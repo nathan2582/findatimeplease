@@ -1,7 +1,7 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_picker.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/schedule_appointment_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/selected_date_extension.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/time_slots_component.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_picker.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/viewModel/schedule_appointment_view_model.dart';
+import 'package:findatimeplease/src/extensions/selected_date_extension.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/components/time_slots_component.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,4 +1,4 @@
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
 import 'package:flutter/material.dart';
 
 class ProviderWorkingDayOfWeek {

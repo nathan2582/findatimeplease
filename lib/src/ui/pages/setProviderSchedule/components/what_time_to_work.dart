@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:findatimeplease/src/ui/pages/scheduleAppointment/date_time_picker_view_model.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/day_hours_selector.dart';
-import 'package:findatimeplease/src/ui/pages/setProviderSchedule/set_provider_schedule_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/scheduleAppointment/datePicker/date_time_picker_view_model.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/components/day_hours_selector.dart';
+import 'package:findatimeplease/src/ui/pages/setProviderSchedule/viewModel/set_provider_schedule_view_model.dart';
 import 'package:flutter/material.dart';
 
 class WhatTimeToWork extends StatelessWidget {
@@ -18,6 +18,13 @@ class WhatTimeToWork extends StatelessWidget {
           'When do you want to work?',
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 fontWeight: FontWeight.bold,
+              ),
+        ),
+        Text(
+          'This flow is assuming the provider is logged in.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.grey,
+                fontStyle: FontStyle.italic,
               ),
         ),
         const SizedBox(height: 16),
