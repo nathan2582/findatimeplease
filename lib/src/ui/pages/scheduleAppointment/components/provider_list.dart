@@ -28,15 +28,13 @@ class ProviderList extends StatelessWidget {
           titleTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
-          onTap: () {
-            onProviderSelected(provider);
-          },
+          onTap: () => onProviderSelected(provider),
           selectedColor: Theme.of(context).colorScheme.onPrimary,
           selected: provider.id == selectedProviderId,
-          selectedTileColor: Theme.of(context).colorScheme.primary,
+          selectedTileColor: Theme.of(context).colorScheme.secondary,
           tileColor: const Color.fromARGB(255, 232, 242, 240),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(500),
+            borderRadius: BorderRadius.circular(20),
           ),
         );
       },

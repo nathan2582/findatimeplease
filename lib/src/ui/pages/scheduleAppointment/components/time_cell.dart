@@ -18,8 +18,7 @@ class TimeCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: use a different gesture recognizer so that the inkwell is circular and not rectangular
-    return AppInkWell(
-      analyticsName: 'time_cell_tapped',
+    return GestureDetector(
       onTap: enabled ? timeSelected : null,
       child: Container(
         decoration: BoxDecoration(

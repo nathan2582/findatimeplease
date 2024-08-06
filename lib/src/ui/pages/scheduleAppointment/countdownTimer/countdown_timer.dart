@@ -31,6 +31,7 @@ class CountdownTimer extends ChangeNotifier {
       if (_currentSeconds == 0) {
         _timer?.cancel();
       }
+
       notifyListeners();
     });
   }

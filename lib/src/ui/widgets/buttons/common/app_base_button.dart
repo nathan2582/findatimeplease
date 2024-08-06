@@ -40,9 +40,10 @@ abstract class AppBaseButton extends StatelessWidget {
     double strokeWidth = 4,
   }) {
     return Center(
-        child: CircularProgressIndicator(
-      strokeWidth: strokeWidth,
-      color: color ?? Theme.of(context).colorScheme.onPrimary,
-    ));
+      child: CircularProgressIndicator(
+        strokeWidth: strokeWidth,
+        color: color ?? Theme.of(context).colorScheme.onPrimary,
+      ),
+    );
   }
 }

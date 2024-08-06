@@ -21,7 +21,7 @@ class ScheduleAppointmentViewModel extends BaseState {
 
   CountdownTimer countdownTimer;
 
-  String get remainingTimeText => countdownTimer.displayTime;
+  // String get remainingTimeText => countdownTimer.displayTime;
   final providerRepo = locator<ProviderRepository>();
   final pageController = PageController();
 
@@ -230,7 +230,6 @@ class ScheduleAppointmentViewModel extends BaseState {
   }) async {
     try {
       fetchingDates = true;
-      notifyListeners();
       final dateRange = await providerRepo.fetchAvailableTimeSlotsForDay(
         providerId: providerId,
         day: date,
@@ -266,5 +265,11 @@ class ScheduleAppointmentViewModel extends BaseState {
     } finally {
       fetchingDates = false;
     }
+  }
+
+  @override
+  void dispose() {
+    print('Dispose me please');
+    super.dispose();
   }
 }
